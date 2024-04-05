@@ -36,23 +36,17 @@ onMounted(async () => {
 <template>
   <div>
     <h1>Star Wars - Ship Battle Simulator</h1>
-    <ul>
-      <!-- On parcourt la liste des publications. Pour chaque publication, on affiche le titre et un lien d'édition est créé avec RouterLink -->
-      <li v-for="ship in ships" v-bind:key="ship.id">
-        {{ ship.name }}
-        <!-- voir le fichier navigationBar.vue pour les explications sur RouterLink -->
-        <RouterLink
-          :to="{
-            name: 'Game',
-            // On peut passer des props à la route. Ici, on passe l'id du post à éditer pour que le composant PostDetailView puisse récupérer la publication et l'afficher.
-            // Attention, l'autorisation de passer des paramètres à un composant doit être activé dans la déclaration de la route (voir la route PostDetailView dans le fichier routes.js).
-            params: { name: ship.name }
-          }"
-        >
-          <span>Éditer</span>
-        </RouterLink>
-      </li>
-    </ul>
+    <form action="GameView.vue">
+        <label for="name">Player name :</label><br>
+        <input type="text" id="name" name="name" value=""><br>
+        <label for="ship-select">Choose a ship :</label><br>
+        <select name="ships" id="ship-select"><br>
+            <option v-for="ship in ships" v-bind:key="ship.id">
+                {{ ship.name }}
+            </option>
+        </select><br>
+        <input type="submit" value="Start your adventure">
+    </form>
     <!-- La libraire vue-loading-overlay a été installée dans ce projet avec npm. C'est une librairie qui facilite la mise en place d'un indicateur de chargement. Pour plus d'information sur son utilisation voir https://github.com/ankurk91/vue-loading-overlay. -->
     <Loading :active="isLoading" />
   </div>
