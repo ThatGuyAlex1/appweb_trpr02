@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
-import { postsService } from '../services/postsService'
-import type Post from '../scripts/post'
+import { gameService } from '../services/gameService'
+import type Ship from '../scripts/ship'
 import Loading from 'vue-loading-overlay'
 import 'vue-loading-overlay/dist/css/index.css'
 import { useToast } from 'vue-toast-notification'
 import 'vue-toast-notification/dist/theme-sugar.css'
 
-const posts = ref([] as Post[])
+const ships = ref([] as Ship[])
 const isLoading = ref(false)
 
 //onMounted est utilisée pour exécuter du code spécifiquement après que le composant a été monté dans le DOM (Document Object Model).
@@ -16,7 +16,7 @@ onMounted(async () => {
 
   try 
   {
-    posts.value = await postsService.getPosts()
+    ships.value = await gameService.getShips()
   } 
   catch (error) 
   {
@@ -32,21 +32,21 @@ onMounted(async () => {
 })
 </script>
 
-<!-- Ce composant est associé à la route "/". Il affiche la liste des publications de l'utilisateur. Lorsque l'utilisateur clique sur l'un des liens "Éditer" associés à une publication, il est redirigé vers la route "/posts/:id" (voir fichier src/router/routes.js). -->
+<!-- Ce composant est associé à la route "/". Ceci présente la liste de vaisseaux et le form pour commencer la partie-->
 <template>
   <div>
-    <h1>Mes publications</h1>
+    <h1>Star Wars - Ship Battle Simulator</h1>
     <ul>
       <!-- On parcourt la liste des publications. Pour chaque publication, on affiche le titre et un lien d'édition est créé avec RouterLink -->
-      <li v-for="post in posts" v-bind:key="post.id">
-        {{ post.title }}
+      <li v-for="ship in ships" v-bind:key="ship.id">
+        {{ ship.name }}
         <!-- voir le fichier navigationBar.vue pour les explications sur RouterLink -->
         <RouterLink
           :to="{
-            name: 'PostDetail',
+            name: 'Game',
             // On peut passer des props à la route. Ici, on passe l'id du post à éditer pour que le composant PostDetailView puisse récupérer la publication et l'afficher.
             // Attention, l'autorisation de passer des paramètres à un composant doit être activé dans la déclaration de la route (voir la route PostDetailView dans le fichier routes.js).
-            params: { id: post.id }
+            params: { name: ship.name }
           }"
         >
           <span>Éditer</span>
