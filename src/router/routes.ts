@@ -26,6 +26,12 @@ const routes: Array<RouteRecordRaw> = [
       props: true
     },
     {
+      // Route de la page Scores
+      path: '/score',
+      name: 'Scores',
+      component: () => import('../views/ScoreView.vue')
+    },
+    {
       // Route 404
       // Dans l'exemple ci-dessous, le paramètre dynamique pathMatch est égal à la partie de l'url qui suit le caractère /. Par exemple, si l'url est /foo, alors le paramètre pathMatch sera égal à foo. L'expression régulière (.*)* qui suit le paramètre dynamique correspond à n'importe quel caractère. Donc, '/:pathMatch(.*)*' correspond à n'importe quel chemin de l'URL. C'est la façon dont on définit une route 404 dans Vue.js.
       path: '/:pathMatch(.*)*',
