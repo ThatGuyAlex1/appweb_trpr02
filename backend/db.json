@@ -1,0 +1,22 @@
+{
+  "posts": [
+    {
+      "id": 10,
+      "title": "un test fsfdsdfsd",
+      "content": "Maecenas sed massa aliquam, commodo nisi et, commodo dui. Phasellus eget orci ac dolor eleifend pulvinar sit amet at mi. Aliquam eleifend ligula leo, quis fermentum arcu tempor sed. Nam commodo nulla eget sem ultricies porta. Donec vitae fermentum lectus, nec blandit orci. Fusce id accumsan lectus. Phasellus et massa vitae lorem mollis ullamcorper et sit amet lectus. Proin lobortis sodales ante laoreet finibus. Nulla at dolor pulvinar, placerat lacus egestas, sollicitudin purus. Vestibulum congue, leo ut porta porta, tortor sem finibus ex, imperdiet ullamcorper est velit non leo. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Nulla sagittis nulla non accumsan cursus. Integer porta posuere justo a bibendum. Integer a faucibus tellus.",
+      "author": "Giuseppe Mirabelli"
+    },
+    {
+      "title": "Nouveau titre de publication",
+      "content": "Ma nouvelle publication",
+      "author": "L'auteur de la publication",
+      "id": 22
+    },
+    {
+      "id": 33,
+      "title": "Proin semper sem vel tempor vehicula.",
+      "content": "Morbi sollicitudin felis ut quam tincidunt bibendum. Morbi eleifend tortor vitae leo ultrices, eu iaculis velit lacinia. Nullam a interdum turpis. Duis et tortor nisi. Curabitur in sapien erat. Pellentesque eget eros a dolor ornare cursus nec nec justo. Morbi efficitur dignissim enim, sed commodo justo sodales id. Ut feugiat pulvinar lectus vitae accumsan. Duis non leo justo. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Curabitur nulla ipsum, porta sit amet mauris nec, efficitur feugiat eros. Proin ullamcorper leo at ante rhoncus ornare. Fusce dui augue, ullamcorper id varius eu, interdum ac nulla. Sed mattis varius laoreet. ",
+      "author": "Cesario Amelio"
+    }
+  ]
+}

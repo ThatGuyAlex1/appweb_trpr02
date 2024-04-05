@@ -1,0 +1,18 @@
+// Extension VSCode pour exécuter les requêtes :https://marketplace.visualstudio.com/items?itemName=humao.rest-client
+@rest_api_url = http://127.0.0.1:3000
+
+### Accès aux publications
+Get {{rest_api_url}}/posts
+
+### Accès à une publication
+Get {{rest_api_url}}/posts/22
+
+### Modification d'une publication
+Put {{rest_api_url}}/posts/22
+Content-Type: application/json
+
+{
+    "title": "Nouveau titre de publication",
+    "content": "Ma nouvelle publication",
+    "author": "L'auteur de la publication"
+}
