@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
-import { gameService } from '../services/gameService'
+import { shipService } from '../services/shipService'
 import type Ship from '../scripts/ship'
 import Loading from 'vue-loading-overlay'
 import 'vue-loading-overlay/dist/css/index.css'
@@ -16,7 +16,7 @@ onMounted(async () => {
 
   try 
   {
-    ships.value = await gameService.getShips()
+    ships.value = await shipService.getShips()
   } 
   catch (error) 
   {
@@ -35,19 +35,21 @@ onMounted(async () => {
 <!-- Ce composant est associé à la route "/". Ceci présente la liste de vaisseaux et le form pour commencer la partie-->
 <template>
   <div>
-    <h1>Star Wars - Ship Battle Simulator</h1>
-    <form action="GameView.vue">
-        <label for="name">Player name :</label><br>
-        <input type="text" id="name" name="name" value=""><br>
-        <label for="ship-select">Choose a ship :</label><br>
-        <select name="ships" id="ship-select"><br>
-            <option v-for="ship in ships" v-bind:key="ship.id">
-                {{ ship.name }}
-            </option>
-        </select><br>
-        <input type="submit" value="Start your adventure">
-    </form>
-    <!-- La libraire vue-loading-overlay a été installée dans ce projet avec npm. C'est une librairie qui facilite la mise en place d'un indicateur de chargement. Pour plus d'information sur son utilisation voir https://github.com/ankurk91/vue-loading-overlay. -->
-    <Loading :active="isLoading" />
+    <h1 class="text-center">Star Wars - Ship Battle Simulator</h1>
+    <div class="d-flex justify-content-center">
+        <form action="game"  method="get">
+            <label for="name">Player name :</label><br>
+            <input type="text" id="name" name="name" value=""><br>
+            <label for="ship-select">Choose a ship :</label><br>
+            <select name="ships" id="ship-select"><br>
+                <option v-for="ship in ships" v-bind:key="ship.id">
+                    {{ ship.name }}
+                </option>
+            </select><br><br>
+            <input type="submit" class="btn btn-primary mb-2" value="Start your adventure">
+        </form>
+        <!-- La libraire vue-loading-overlay a été installée dans ce projet avec npm. C'est une librairie qui facilite la mise en place d'un indicateur de chargement. Pour plus d'information sur son utilisation voir https://github.com/ankurk91/vue-loading-overlay. -->
+        <Loading :active="isLoading" />
+    </div>
   </div>
 </template>
