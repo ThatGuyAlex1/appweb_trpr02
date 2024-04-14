@@ -9,18 +9,18 @@ export default defineConfig({
     // https://vitepress.dev/reference/default-theme-config
     nav: [
       { text: 'Home', link: '/' },
-      { text: 'Semaine 1', link: '/week1' },
-      { text: 'Semaine 2', link: '/week2' },
-      { text: 'Semaine 3', link: '/week3' }
+      { text: 'Semaine 1', link: '/week1/week1' },
+      { text: 'Semaine 2', link: '/week2/week2' },
+      { text: 'Semaine 3', link: '/week3/week3' }
     ],
 
     sidebar: [
       {
         text: 'Examples',
         items: [
-          { text: 'Semaine 1', link: '/week1' },
-          { text: 'Semaine 2', link: '/week2' },
-          { text: 'Semaine 3', link: '/week3' }
+          { text: 'Semaine 1', link: '/week1/week1' },
+          { text: 'Semaine 2', link: '/week2/week2' },
+          { text: 'Semaine 3', link: '/week3/week3' }
         ]
       }
     ],
