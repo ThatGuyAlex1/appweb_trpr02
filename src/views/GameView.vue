@@ -3,6 +3,14 @@ import { defineProps, computed } from 'vue'
 import { useRouter, onBeforeRouteLeave  } from 'vue-router'
 import ConfirmModal from '../components/ConfirmModal.vue'
 import type Ship from '../scripts/ship'
+import GameActions from '../components/GameActions.vue'
+import GameMission from '../components/GameMission.vue'
+import GamePlayer from '../components/GamePlayer.vue'
+import GameEnemy from '../components/GameEnemy.vue'
+import Loading from 'vue-loading-overlay'
+import 'vue-loading-overlay/dist/css/index.css'
+import { useToast } from 'vue-toast-notification'
+import 'vue-toast-notification/dist/theme-sugar.css'
 
 const props = defineProps({
   name: String,
@@ -18,16 +26,14 @@ const selectedShip = computed(() => {
 const router = useRouter()
 </script>
 <template>
-    <div class="container">
-    <h1 class="title">Ship Details</h1>
-    <p>{{ name }}</p>
-    <div v-if="selectedShip">
-      <p><strong>Name:</strong> {{ selectedShip.name }}</p>
-      <p><strong>ID:</strong> {{ selectedShip.id }}</p>
-      <!-- Add more properties as needed -->
-    </div>
-    <div v-else>
-      <p>No ship selected. Go back to home to select a ship</p>
+  <div class="container">
+    <div class="row">
+
+      <GameActions />
+      <GameMission />
+      <GamePlayer />
+      <GameEnemy />
+
     </div>
   </div>
-  </template>
+</template>
