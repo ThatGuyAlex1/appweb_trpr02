@@ -7,10 +7,10 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav mr-auto">
         <li class="nav-item">
-          <RouterLink class="nav-link" id="home" to="/">Home</RouterLink>
+          <RouterLink class="nav-link" id="home" to="/">Accueil</RouterLink>
         </li>
         <li class="nav-item">
-          <RouterLink class="nav-link" id="score" :to="{ name: 'Score' }">Leaderboard</RouterLink>
+          <RouterLink class="nav-link" id="score" :to="{ name: 'Score' }">Classement</RouterLink>
         </li>
       </ul>
     </div>

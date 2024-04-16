@@ -51,18 +51,22 @@ const handleSubmit = () => {
 <!-- Ce composant est associé à la route "/". Ceci présente la liste de vaisseaux et le form pour commencer la partie-->
 <template>
   <div>
-    <h1 class="text-center">Star Wars - Ship Battle Simulator</h1>
-    <div class="d-flex justify-content-center">
+    <h1 class="text-center">Star Wars - Simulateur de combat spatiaux</h1>
+    <div class="col d-flex justify-content-center">
         <form @submit.prevent="handleSubmit">
-            <label for="name">Player name :</label><br>
-            <input type="text" id="name" name="name" v-model="playerName"><br>
-            <label for="ship-select">Choose a ship :</label><br>
-            <select name="ships" id="ship-select" v-model="selectedShipName"><br>
+          <div class="form-group pt-3 pb-3">
+            <label for="name">Entrez votre nom :</label>
+            <input type="text" id="name" name="name" class="form-control" v-model="playerName">
+          </div>
+          <div class="form-group pb-4">
+            <label for="ship-select">Choisir votre vaisseau :</label>
+            <select name="ships" id="ship-select" class="form-select" v-model="selectedShipName">
                 <option v-for="ship in ships" v-bind:key="ship.id">
                     {{ ship.name }}
                 </option>
-            </select><br><br>
-            <button type="submit">Start your adventure</button>
+            </select>
+          </div>
+            <button type="submit" class="btn btn-primary">Commencer votre aventure !</button>
         </form>
         <!-- La libraire vue-loading-overlay a été installée dans ce projet avec npm. C'est une librairie qui facilite la mise en place d'un indicateur de chargement. Pour plus d'information sur son utilisation voir https://github.com/ankurk91/vue-loading-overlay. -->
         <Loading :active="isLoading" />
