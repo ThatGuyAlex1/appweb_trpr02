@@ -16,7 +16,7 @@ export default defineConfig({
 
     sidebar: [
       {
-        text: 'Examples',
+        text: 'Semaines',
         items: [
           { text: 'Semaine 1', link: '/week1/week1' },
           { text: 'Semaine 2', link: '/week2/week2' },
