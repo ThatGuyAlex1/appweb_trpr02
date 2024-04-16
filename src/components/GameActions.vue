@@ -1,4 +1,4 @@
-<script></script>
+<script setup lang="ts"></script>
 
 <template>
     <div class="card col-lg-9 col-md-12">

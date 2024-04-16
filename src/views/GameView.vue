@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import { onMounted, ref } from 'vue'
-import { shipService } from '../services/shipService'
+import { defineProps, computed } from 'vue'
+import { useRouter, onBeforeRouteLeave  } from 'vue-router'
+import ConfirmModal from '../components/ConfirmModal.vue'
 import type Ship from '../scripts/ship'
 import GameActions from '../components/GameActions.vue'
 import GameMission from '../components/GameMission.vue'
@@ -11,32 +12,19 @@ import 'vue-loading-overlay/dist/css/index.css'
 import { useToast } from 'vue-toast-notification'
 import 'vue-toast-notification/dist/theme-sugar.css'
 
-const ships = ref([] as Ship[])
-const isLoading = ref(false)
-
-//onMounted est utilisée pour exécuter du code spécifiquement après que le composant a été monté dans le DOM (Document Object Model).
-onMounted(async () => {
-  isLoading.value = true
-
-  try 
-  {
-    ships.value = await shipService.getShips()
-  } 
-  catch (error) 
-  {
-    useToast().error(
-      `Erreur avec le service: ${(error as Error).message}. Est-ce que vous avez démarré le backend localement ?`,
-      { duration: 6000 }
-    )
-  } 
-  finally 
-  {
-    isLoading.value = false
-  }
+const props = defineProps({
+  name: String,
+  selectedShip: String
 })
-</script>
 
-<!-- Ce composant est associé à la route "/". Ceci présente la liste de vaisseaux et le form pour commencer la partie-->
+//aidé de chatGPT
+const selectedShip = computed(() => {
+  const shipData = props.selectedShip;
+  return shipData ? JSON.parse(shipData) as Ship : null;
+})
+
+const router = useRouter()
+</script>
 <template>
   <div class="container">
     <div class="row">
@@ -47,5 +35,5 @@ onMounted(async () => {
       <GameEnemy />
 
     </div>
-    </div>
+  </div>
 </template>

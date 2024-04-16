@@ -8,11 +8,11 @@ hero:
   actions:
     - theme: brand
       text: Semaine 1
-      link: /week1
+      link: /week1/week1
     - theme: brand
       text: Semaine 2
-      link: /week2
+      link: /week2/week2
     - theme: brand
       text: Semaine 3
-      link: /week3
+      link: /week3/week3
 
