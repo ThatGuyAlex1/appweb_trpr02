@@ -10,7 +10,7 @@ hero:
       link: /week1/Alexandre_St-Amant1
     - theme: brand
       text: <William Villeneuve>
-      link: /week1-WilliamVilleneuve
+      link: /week1/WilliamVilleneuve
     - theme: brand
       text: <nom3>
       link: /<nom3>.md
