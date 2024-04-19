@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import { gameService } from '../services/gameService'
-import { ref,defineProps, computed } from 'vue'
-import { useRouter, onBeforeRouteLeave  } from 'vue-router'
+import { ref, onMounted, defineProps, computed } from 'vue'
+import { useRouter  } from 'vue-router'
 import ConfirmModal from '../components/ConfirmModal.vue'
+import NotifyModal from '../components/NotifyModal.vue'
 import type Ship from '../scripts/ship'
 import type Character from '../scripts/character'
 import GameActions from '../components/GameActions.vue'
@@ -13,24 +14,38 @@ import Loading from 'vue-loading-overlay'
 import 'vue-loading-overlay/dist/css/index.css'
 import { useToast } from 'vue-toast-notification'
 import 'vue-toast-notification/dist/theme-sugar.css'
+
 const MAX_LIFE_POINT: number = 200;
 const PLAYER_BASE_EXPERIENCE: number = 4;
 let ennemiesRef = ref<Character[]>([]);
-let errorMessage: string;
 let currentPlayerLife = ref<number>(0);
 currentPlayerLife.value+=MAX_LIFE_POINT;
 let currentEnnemyLife = ref<number>(0);
 let currentMission = ref<number>(1);
 let currentPlayerCG = ref<number>(0);
-let setupIsDone = ref(false);
+const isLoading = ref(true)
+const triggerDeathModal = ref(0)
+const triggerWinModal = ref(0)
 
 const props = defineProps({
   name: String,
   selectedShip: String
 })
 
-async function fetchEnnemies(){
+onMounted(async () => {
   try {
+    await setup();
+  } catch (error) {
+    useToast().error(
+      `Erreur avec le service: ${(error as Error).message}. Oups, le backend a lâché !`,
+      { duration: 6000 }
+    )
+  } finally {
+    isLoading.value = false
+  }
+})
+
+async function fetchEnnemies(){
   const gameResponse: Character[] = await gameService.getCharacters();
   const selectedEnnemies: Character[] = [];
   //aidé par chatGPT
@@ -42,14 +57,8 @@ async function fetchEnnemies(){
         selectedEnnemies.push(gameResponse[randomIndex]);
       }
     }
-  ennemiesRef.value = selectedEnnemies;
-  } catch (error) {
-  errorMessage = 'Error fetching ennemies:' + error
-  }
+    ennemiesRef.value = selectedEnnemies;
 }
-
-
-
 
 //aidé de chatGPT
 const selectedShip = computed(() => {
@@ -59,11 +68,10 @@ const selectedShip = computed(() => {
 
 async function setup(){
   await fetchEnnemies();
-  setupEnnemyLife();
-  setupIsDone.value = true;
+  await setupEnnemyLife();
 }
 
-function setupEnnemyLife(){
+async function setupEnnemyLife(){
   currentEnnemyLife.value = ennemiesRef.value[currentMission.value-1].ship.vitality;
 }
 
@@ -102,19 +110,22 @@ function handleFinishMissionAndRepair(playerLife: number, CGPlayer: number){
   nextMission();
 }
 
-function handleErrorUpdate(error: string){
-  errorMessage = error;
-}
-
-setup();
 </script>
 <template>
   <div class="container">
-    <div class="row">
-      <GameActions v-if="setupIsDone" :playerLife="currentPlayerLife" :maxPlayerLife="MAX_LIFE_POINT" :playerExperience="PLAYER_BASE_EXPERIENCE" :ennemyLife="currentEnnemyLife" :maxEnnemyLife="ennemiesRef[currentMission-1].ship.vitality" :ennemyExperience="ennemiesRef[currentMission-1].experience" :currentPlayerCG="currentPlayerCG" @updateLife="handleUpdateLife" @updateFinishMission="nextMission" @updateFinishMissionAndRepair="handleFinishMissionAndRepair" @errorUpdate="handleErrorUpdate" />
-      <GameMission v-if="setupIsDone" />
-      <GamePlayer v-if="setupIsDone" />
-      <GameEnemy v-if="setupIsDone" />
-    </div>
+      <div class="row">
+        <GameActions v-if="!isLoading" :playerLife="currentPlayerLife" :maxPlayerLife="MAX_LIFE_POINT" :playerExperience="PLAYER_BASE_EXPERIENCE" :ennemyLife="currentEnnemyLife" :maxEnnemyLife="ennemiesRef[currentMission-1].ship.vitality" :ennemyExperience="ennemiesRef[currentMission-1].experience" :currentPlayerCG="currentPlayerCG" @updateLife="handleUpdateLife" @updateFinishMission="nextMission" @updateFinishMissionAndRepair="handleFinishMissionAndRepair"/>
+        <GameMission v-if="!isLoading"/>
+        <GamePlayer v-if="!isLoading"/>
+        <GameEnemy v-if="!isLoading"/>
+      </div>
+    <NotifyModal
+      @onModalConfirmed=""
+      :trigger="triggerDeathModal, triggerWinModal"
+      title="Attention"
+      body="Vos changements seront perdus. Voulez-vous vraiment quitter cette page ? "
+      dismissButton="Ok"
+    />
+    <Loading :active="isLoading" />
   </div>
 </template>
