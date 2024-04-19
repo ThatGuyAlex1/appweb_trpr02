@@ -1,4 +1,20 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+
+import { computed } from 'vue';
+
+
+const props = defineProps({
+  playerName: String,
+  playerShip: String,
+  playerLife: Number,
+  maxPlayerLife: Number,
+  playerExperience: Number,
+  currentPlayerCG: Number
+})
+
+
+
+</script>
 
 <template>
     <div class="card col-lg-4 col-md-6"> 
