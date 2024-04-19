@@ -112,9 +112,9 @@ setup();
   <div class="container">
     <div class="row">
       <GameActions v-if="setupIsDone" :playerLife="currentPlayerLife" :maxPlayerLife="MAX_LIFE_POINT" :playerExperience="PLAYER_BASE_EXPERIENCE" :ennemyLife="currentEnnemyLife" :maxEnnemyLife="ennemiesRef[currentMission-1].ship.vitality" :ennemyExperience="ennemiesRef[currentMission-1].experience" :currentPlayerCG="currentPlayerCG" @updateLife="handleUpdateLife" @updateFinishMission="nextMission" @updateFinishMissionAndRepair="handleFinishMissionAndRepair" @errorUpdate="handleErrorUpdate" />
-      <GameMission v-if="setupIsDone" />
-      <GamePlayer v-if="setupIsDone" />
-      <GameEnemy v-if="setupIsDone" />
+      <GameMission v-if="setupIsDone" :currentMission="currentMission" />
+      <GamePlayer v-if="setupIsDone" :playerName="props.name" playerShip="props.selectedShip"  :playerLife="currentPlayerLife" :maxPlayerLife="MAX_LIFE_POINT" :playerExperience="PLAYER_BASE_EXPERIENCE" :ennemyLife="currentEnnemyLife" :currentPlayerCG="currentPlayerCG" />
+      <GameEnemy v-if="setupIsDone" :ennemyLife="currentEnnemyLife" :maxEnnemyLife="ennemiesRef[currentMission-1].ship.vitality" :ennemyExperience="ennemiesRef[currentMission-1].experience" />
     </div>
   </div>
 </template>
