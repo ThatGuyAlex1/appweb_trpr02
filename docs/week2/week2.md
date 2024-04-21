@@ -9,8 +9,8 @@ hero:
       text: <nom1>
       link: /<nom1>.md
     - theme: brand
-      text: <nom2>
-      link: /<nom2>.md
+      text: <William Villeneuve>
+      link: /week2/William_Villeneuve2
     - theme: brand
       text: <nom3>
       link: /<nom3>.md
