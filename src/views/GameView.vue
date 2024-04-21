@@ -113,8 +113,8 @@ setup();
     <div class="row">
       <GameActions v-if="setupIsDone" :playerLife="currentPlayerLife" :maxPlayerLife="MAX_LIFE_POINT" :playerExperience="PLAYER_BASE_EXPERIENCE" :ennemyLife="currentEnnemyLife" :maxEnnemyLife="ennemiesRef[currentMission-1].ship.vitality" :ennemyExperience="ennemiesRef[currentMission-1].experience" :currentPlayerCG="currentPlayerCG" @updateLife="handleUpdateLife" @updateFinishMission="nextMission" @updateFinishMissionAndRepair="handleFinishMissionAndRepair" @errorUpdate="handleErrorUpdate" />
       <GameMission v-if="setupIsDone" :currentMission="currentMission" />
-      <GamePlayer v-if="setupIsDone" :playerName="props.name" :playerShip="selectedShip!.name"  :playerLife="currentPlayerLife" :maxPlayerLife="MAX_LIFE_POINT" :playerExperience="PLAYER_BASE_EXPERIENCE" :ennemyLife="currentEnnemyLife" :currentPlayerCG="currentPlayerCG" />
-      <GameEnemy v-if="setupIsDone" :ennemyLife="currentEnnemyLife" :maxEnnemyLife="ennemiesRef[currentMission-1].ship.vitality" :ennemyExperience="ennemiesRef[currentMission-1].experience" />
+      <GamePlayer v-if="setupIsDone" :playerName="props.name" :playerShip="selectedShip!.name"  :playerLife="currentPlayerLife" :maxPlayerLife="MAX_LIFE_POINT" :playerExperience="PLAYER_BASE_EXPERIENCE" :currentPlayerCG="currentPlayerCG" />
+      <GameEnemy v-if="setupIsDone" :ennemyName="ennemiesRef[currentMission-1].name" :ennemyShip="ennemiesRef[currentMission-1].ship.name" :ennemyLife="currentEnnemyLife" :maxEnnemyLife="ennemiesRef[currentMission-1].ship.vitality" :ennemyExperience="ennemiesRef[currentMission-1].experience" :ennemyCG="ennemiesRef[currentMission-1].credit" />
     </div>
   </div>
 </template>
