@@ -36,7 +36,9 @@ function setupExperienceName(experience: number){
     }
 }
 
-let ennemyExperienceName = setupExperienceName(props.ennemyExperience!);
+const ennemyExperienceName = computed(() => {
+  return setupExperienceName(props.ennemyExperience ?? 0);
+});
 
 
 
