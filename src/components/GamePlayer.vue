@@ -43,11 +43,12 @@ let playerExperienceName = setupExperienceName(props.playerExperience!);
 <template>
     <div class="card col-lg-4 col-md-6"> 
         <div class="card-body">
-            <h5 class="card-title" id="playerNameText">{{ props.playerName }}</h5>
-            <p class="card-text" id="playerExperience&CGText">{{ playerExperienceName }} - {{ props.currentPlayerCG }} CG</p>
+            <h5 class="card-title d-flex justify-content-center" id="playerNameText">{{ props.playerName }}</h5>
+            <h6 class="card-text d-flex justify-content-center" id="playerExperience&CGText">{{ playerExperienceName }} - {{ props.currentPlayerCG }} CG</h6>
+            <h6 class="card-text d-flex justify-content-center" id="playerShipText">{{ props.playerShip }}</h6>
             <div class="progress mb-2">
               <!-- aidé un peu de chatGPT -->
-                <div class="progress-bar" id="playerLifeBar" role="progressbar" :style="{ width: lifePercentage + '%' }" aria-valuemin="0" aria-valuemax="100">{{ props.playerShip }} {{ lifePercentage.toFixed(0) }}%</div>
+                <div class="progress-bar" id="playerLifeBar" role="progressbar" :style="{ width: lifePercentage + '%' }" aria-valuemin="0" aria-valuemax="100">{{ lifePercentage.toFixed(0) }}%</div>
             </div>
         </div>
     </div>

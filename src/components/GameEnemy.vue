@@ -47,10 +47,13 @@ const ennemyExperienceName = computed(() => {
 <template>
     <div class="card col-lg-4 col-md-6"> 
         <div class="card-body">
-            <h5 class="card-title" id="ennemyNameText">{{ props.ennemyName }}</h5>
-            <p class="card-text" id="ennemyExperience&CGText">{{ ennemyExperienceName }} - {{ props.ennemyCG }} CG</p>
-            <div class="progress">
-                <div class="progress-bar" id="ennemyLifeBar" role="progressbar" :style="{ width: lifePercentage + '%' }" aria-valuemin="0" aria-valuemax="100">{{ props.ennemyShip }} {{ lifePercentage.toFixed(0) }}%</div>
+            <h5 class="card-title d-flex justify-content-center" id="ennemyNameText">{{ props.ennemyName }}</h5>
+            <h6 class="card-text d-flex justify-content-center" id="ennemyExperience&CGText">{{ ennemyExperienceName }} - {{ props.ennemyCG }} CG</h6>
+            <h6 class="card-text d-flex justify-content-center" id="ennemyShipText">{{ props.ennemyShip }}</h6>
+
+            <div class="progress mb-2">
+                <!-- aidé un peu de chatGPT -->
+                <div class="progress-bar bg-danger" id="ennemyLifeBar" role="progressbar" :style="{ width: lifePercentage + '%' }" aria-valuemin="0" aria-valuemax="100">{{ lifePercentage.toFixed(0) }}%</div>
             </div>
         </div>
     </div>
