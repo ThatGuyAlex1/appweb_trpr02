@@ -53,8 +53,8 @@ const handleSubmit = () => {
   <div>
     <h1 class="text-center">Star Wars - Simulateur de combat spatiaux</h1>
     <div class="col d-flex justify-content-center">
-        <form @submit.prevent="handleSubmit">
-          <div class="form-group pt-3 pb-3">
+        <form @submit.prevent="handleSubmit" class="bg-dark text-white p-3 mt-4">
+          <div class="form-group pt-2 pb-3">
             <label for="name">Entrez votre nom :</label>
             <input type="text" id="name" name="name" class="form-control" v-model="playerName">
           </div>

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type Ship from '../scripts/ship'
-const CGPerPercent: number = 3;
+const CGPerPercent: number = 1;
 const props = defineProps({
   playerLife: Number,
   maxPlayerLife: Number,

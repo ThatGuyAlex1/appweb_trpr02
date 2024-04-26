@@ -53,20 +53,20 @@ const confirm = () => {
   >
     <div class="modal-dialog">
       <div class="modal-content">
-        <div class="modal-header">
+        <div class="modal-header bg-warning text-white">
           <h5 class="modal-title">{{ title }}</h5>
         </div>
-        <div class="modal-body">
+        <div class="modal-body bg-dark text-white">
           {{ body1 }}
           {{ credits }}
           {{ body2 }}
         </div>
-        <div class="modal-footer">
+        <div class="modal-footer bg-dark text-white">
           <button
             name="confirmer"
             type="button"
             data-bs-dismiss="modal"
-            class="btn btn-primary"
+            class="btn btn-warning text-white"
             @click="confirm"
           >
             {{ dismissButton }}

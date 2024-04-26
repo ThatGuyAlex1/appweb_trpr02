@@ -88,6 +88,7 @@ function nextMission(){
   if(currentMission.value == 5){
     //TODO popup de partie gagné, envoyer le résultat a la database et rediriger vers la page de score
     triggerWinModal.value = true;
+    triggerRewardModal.value = false;
   }
   else{
     currentMission.value++;
@@ -172,7 +173,7 @@ function resetRewardModal() {
       dismissButton="Accueil"
     />
     <!--Modal de victoire (mission)-->
-    <RewardModal v-if="!isLoading"
+    <RewardModal
       @onRewardConfirmed="resetRewardModal"
       :trigger="triggerRewardModal"
       title="Ennemi vaincu"
@@ -191,7 +192,7 @@ function resetRewardModal() {
       body2=" crédits."
       dismissButton="Voir le classement"
     />
-    <!--Modal d'abandon de donné-->
+    <!--Modal d'abandon de donnée-->
     <LeaveModal
       @onLeaveConfirmed="leaveConfirm"
       :trigger="triggerLeaveModal"

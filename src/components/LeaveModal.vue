@@ -50,7 +50,7 @@ const confirm = () => {
   >
     <div class="modal-dialog">
       <div class="modal-content">
-        <div class="modal-header">
+        <div class="modal-header bg-secondary text-white">
           <h5 class="modal-title">{{ title }}</h5>
           <button
             type="button"
@@ -59,15 +59,15 @@ const confirm = () => {
             aria-label="Close"
           ></button>
         </div>
-        <div class="modal-body">
+        <div class="modal-body bg-dark text-white">
           {{ body }}
         </div>
-        <div class="modal-footer">
+        <div class="modal-footer bg-dark text-white">
           <button
             name="confirmer"
             type="button"
             data-bs-dismiss="modal"
-            class="btn btn-primary"
+            class="btn btn-danger"
             @click="confirm"
           >
             {{ confirmButton }}
