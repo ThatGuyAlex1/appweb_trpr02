@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { gameService } from '../services/gameService'
+import { playerScoreService } from '@/services/playerScoreService'
 import { ref, onMounted, defineProps, computed } from 'vue'
 import { onBeforeRouteLeave, useRouter, type RouteRecordName  } from 'vue-router'
 import DeathModal from '../components/DeathModal.vue'
@@ -88,6 +89,8 @@ function nextMission(){
   if(currentMission.value == 5){
     //TODO popup de partie gagné, envoyer le résultat a la database et rediriger vers la page de score
     triggerWinModal.value = true;
+    let player = {name: props.name, score: currentPlayerCG.value};
+    //playerScoreService.addScore();
   }
   else{
     currentMission.value++;

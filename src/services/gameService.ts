@@ -1,4 +1,5 @@
 import axios from 'axios'
+import type Player from '../scripts/playerScore'
 // import { API } from '@/shared/config'
 
 // Note sur le gestion des erreurs:
@@ -22,8 +23,9 @@ async function getRankings () {
   return data
 }
 
-async function postRanking () {
-  //TODO
+async function postRanking (player : string, score : number) {
+  const { data } = await axios.post(`${API_URL}/rankings`, { player, score })
+  return data
 }
 
 
