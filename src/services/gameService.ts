@@ -19,12 +19,16 @@ async function getCharacters () {
 }
 
 async function getRankings () {
-  const { data } = await axios.get(`${API_URL}/rankings`)
+  const { data } = await axios.get(`${API_URL}/ranking`)
   return data
 }
 
-async function postRanking (player : string, score : number) {
-  const { data } = await axios.post(`${API_URL}/rankings`, { player, score })
+async function postRanking (name : string, score : number) {
+  const dataSent = {
+    name: name,
+    score: score
+  };
+  const { data } = await axios.post(`${API_URL}/ranking`, dataSent)
   return data
 }
 

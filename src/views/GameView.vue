@@ -85,12 +85,12 @@ async function setupEnnemyLife(){
 
 const router = useRouter()
 
-function nextMission(){
+async function nextMission(){
   if(currentMission.value == 5){
     //TODO popup de partie gagné, envoyer le résultat a la database et rediriger vers la page de score
     triggerWinModal.value = true;
     let playerName = props.name;
-    gameService.postRanking(playerName, currentPlayerCG.value);
+    await gameService.postRanking(playerName!, currentPlayerCG.value);
   }
   else{
     currentMission.value++;
