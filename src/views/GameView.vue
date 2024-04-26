@@ -89,8 +89,8 @@ function nextMission(){
   if(currentMission.value == 5){
     //TODO popup de partie gagné, envoyer le résultat a la database et rediriger vers la page de score
     triggerWinModal.value = true;
-    let player = {name: props.name, score: currentPlayerCG.value};
-    //playerScoreService.addScore();
+    let playerName = props.name;
+    gameService.postRanking(playerName, currentPlayerCG.value);
   }
   else{
     currentMission.value++;
