@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { gameService } from '../services/gameService'
 import { ref, onMounted, defineProps, computed } from 'vue'
-import { useRouter  } from 'vue-router'
+import { onBeforeRouteLeave, useRouter  } from 'vue-router'
 import ConfirmModal from '../components/ConfirmModal.vue'
 import NotifyModal from '../components/NotifyModal.vue'
 import type Ship from '../scripts/ship'
@@ -23,9 +23,11 @@ currentPlayerLife.value+=MAX_LIFE_POINT;
 let currentEnnemyLife = ref<number>(0);
 let currentMission = ref<number>(1);
 let currentPlayerCG = ref<number>(0);
-const isLoading = ref(true)
-const triggerDeathModal = ref(0)
-const triggerWinModal = ref(0)
+const isLoading = ref(true);
+const triggerDeathModal = ref(false);
+const triggerRewardModal = ref(false);
+const triggerWinModal = ref(false);
+const triggerLeaveModal = ref(false);
 
 const props = defineProps({
   name: String,
@@ -82,6 +84,7 @@ function nextMission(){
     //TODO popup de partie gagné, envoyer le résultat a la database et rediriger vers la page de score
   }
   else{
+    triggerRewardModal.value = true;
     currentMission.value++;
     setupEnnemyLife();
   }
@@ -89,7 +92,7 @@ function nextMission(){
 
 function handleUpdateLife(playerLife: number, ennemyLife: number){
   if(playerLife <= 0){
-    //TODO popup message de game over et retour au home
+    triggerDeathModal.value = true;
   }
   else{
     currentPlayerLife.value = playerLife;
@@ -110,6 +113,28 @@ function handleFinishMissionAndRepair(playerLife: number, CGPlayer: number){
   nextMission();
 }
 
+onBeforeRouteLeave((to, from, next) => {
+  if (triggerDeathModal.value || triggerWinModal.value) {
+    // Empêche la navigation
+    next(false)
+  } else {
+    // Autorise la navigation
+    next(false)
+  }
+})
+
+function returnToHome() {
+  router.push({ name: 'Home' })
+}
+
+function finishGame() {
+  router.push({ name: 'Score' })
+}
+
+function resetRewardModal() {
+  triggerRewardModal.value = false;
+}
+
 </script>
 <template>
   <div class="container">
@@ -119,12 +144,40 @@ function handleFinishMissionAndRepair(playerLife: number, CGPlayer: number){
         <GamePlayer v-if="!isLoading"/>
         <GameEnemy v-if="!isLoading"/>
       </div>
+    <!--Modal de fin partie (mort)-->
     <NotifyModal
-      @onModalConfirmed=""
-      :trigger="triggerDeathModal, triggerWinModal"
-      title="Attention"
-      body="Vos changements seront perdus. Voulez-vous vraiment quitter cette page ? "
+      @onModalConfirmed="returnToHome"
+      :trigger="triggerDeathModal"
+      title="Partie terminée"
+      body="Vous avez péri lors d'un combat. Retour au menu principal."
       dismissButton="Ok"
+    />
+    <!--Modal de victoire (mission)-->
+    <NotifyModal
+      @onModalConfirmed="resetRewardModal"
+      :trigger="triggerRewardModal"
+      title="Ennemi vaincu"
+      body="Vous avez gagnez le combat. Vous remportez {{ ennemiesRef[currentMission - 1].credits }} crédits."
+      dismissButton="Ok"
+    />
+    <!--Modal de victoire (mission)-->
+    <NotifyModal
+      @onModalConfirmed="finishGame"
+      :trigger="triggerWinModal"
+      title="Victoire !"
+      body="Vous avez complété 5 mission. Vous terminez avec {{ currentPlayerCG.value }} crédits."
+      dismissButton="Ok"
+    />
+
+    />
+    <!--Modal de victoire (mission)-->
+    <ConfirmModal
+      @onModalConfirmed=""
+      :trigger="triggerLeaveModal"
+      title="Attention"
+      body="Vous êtes sur le point de quitter le jeu. Vos données seront perdues."
+      confirmButton="Quitter"
+      cancelButton="Annuler"
     />
     <Loading :active="isLoading" />
   </div>
