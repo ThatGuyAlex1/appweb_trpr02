@@ -53,8 +53,23 @@ const ennemyExperienceName = computed(() => {
 
             <div class="progress mb-2">
                 <!-- aidé un peu de chatGPT -->
-                <div class="progress-bar bg-danger" id="ennemyLifeBar" role="progressbar" :style="{ width: lifePercentage + '%' }" aria-valuemin="0" aria-valuemax="100">{{ lifePercentage.toFixed(0) }}%</div>
+                <div class="progress-bar bg-danger" :class="{ 'shake': lifePercentage < 20 }" id="ennemyLifeBar" role="progressbar" :style="{ width: lifePercentage + '%' }" aria-valuemin="0" aria-valuemax="100">{{ lifePercentage.toFixed(0) }}%</div>
             </div>
         </div>
     </div>
 </template>
+
+<style scoped>
+/* aidé de chatGPT pour faire des animations */
+@keyframes shake {
+  0% { transform: translateX(0); }
+  25% { transform: rotate(-5deg); }
+  50% { transform: rotate(5deg); }
+  75% { transform: rotate(-5deg); }
+  100% { transform: translateX(0); }
+}
+
+.shake {
+  animation: shake 0.1s infinite;
+}
+</style>
