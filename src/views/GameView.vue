@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { gameService } from '../services/gameService'
 import { ref, onMounted, defineProps, computed } from 'vue'
-import { onBeforeRouteLeave, useRouter  } from 'vue-router'
+import { onBeforeRouteLeave, useRouter, type RouteRecordName  } from 'vue-router'
 import DeathModal from '../components/DeathModal.vue'
 import RewardModal from '../components/RewardModal.vue'
 import WinModal from '../components/WinModal.vue'
@@ -30,6 +30,7 @@ const triggerDeathModal = ref(false);
 const triggerRewardModal = ref(false);
 const triggerWinModal = ref(false);
 const triggerLeaveModal = ref(false);
+const leaveConfirmed = ref(false);
 let ennemyCG = ref(0);
 
 const props = defineProps({
@@ -85,10 +86,9 @@ const router = useRouter()
 function nextMission(){
   if(currentMission.value == 5){
     //TODO popup de partie gagné, envoyer le résultat a la database et rediriger vers la page de score
+    triggerWinModal.value = true;
   }
   else{
-    updateCurrentEnnemyCG();
-    triggerRewardModal.value = true;
     currentMission.value++;
     setupEnnemyLife();
   }
@@ -108,6 +108,8 @@ function handleUpdateLife(playerLife: number, ennemyLife: number){
   }
 
   if(ennemyLife <= 0){
+    updateCurrentEnnemyCG();
+    triggerRewardModal.value = true;
     currentPlayerCG.value+=ennemiesRef.value[currentMission.value-1].credit;
     nextMission();
   }
@@ -123,11 +125,15 @@ function handleFinishMissionAndRepair(playerLife: number, CGPlayer: number){
 }
 
 onBeforeRouteLeave((to, from, next) => {
-  if (triggerDeathModal.value) {
-    // Empêche la navigation
+  if (triggerDeathModal.value || triggerWinModal.value) {
     next()
-  } else {
-    // Autorise la navigation
+  } 
+  else if (leaveConfirmed) {
+    sendToDestination(to.name);
+    next()
+  }
+  else {
+    triggerLeaveModal.value = true;
     next(false)
   }
 })
@@ -138,6 +144,14 @@ function returnToHome() {
 
 function finishGame() {
   router.push({ name: 'Score' })
+}
+
+function leaveConfirm() {
+  leaveConfirmed.value = true;
+}
+
+function sendToDestination(destination) {
+  router.push({ name: destination })
 }
 
 function resetRewardModal() {
@@ -177,12 +191,14 @@ function resetRewardModal() {
       @onWinConfirmed="finishGame"
       :trigger="triggerWinModal"
       title="Victoire !"
-      body="Vous avez complété 5 mission. Vous terminez avec {{ currentPlayerCG.value }} crédits."
+      body1="Vous avez complété 5 mission. Vous terminez avec "
+      :credits=currentPlayerCG
+      body2=" crédits."
       dismissButton="Voir le classement"
     />
     <!--Modal d'abandon de donné-->
     <LeaveModal
-      @onLeaveConfirmed=""
+      @onLeaveConfirmed="leaveConfirm"
       :trigger="triggerLeaveModal"
       title="Attention"
       body="Vous êtes sur le point de quitter le jeu. Vos données seront perdues."

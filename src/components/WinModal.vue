@@ -6,7 +6,9 @@ import { ref, watch, onMounted } from 'vue'
 const props = defineProps({
   trigger: Boolean,
   title: String,
-  body: String,
+  body1: String,
+  body2: String,
+  credits: Number,
   dismissButton: String
 })
 
@@ -55,7 +57,9 @@ const confirm = () => {
           <h5 class="modal-title">{{ title }}</h5>
         </div>
         <div class="modal-body">
-          {{ body }}
+          {{ body1 }}
+          {{ credits }}
+          {{ body2 }}
         </div>
         <div class="modal-footer">
           <button
