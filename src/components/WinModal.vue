@@ -43,6 +43,8 @@ const confirm = () => {
   <div
     class="modal fade"
     id="win-modal"
+    data-bs-backdrop="static"
+    data-bs-keyboard="false"
     tabindex="-1"
     aria-labelledby="win-modal"
     aria-hidden="true"

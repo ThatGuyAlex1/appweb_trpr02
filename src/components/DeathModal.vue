@@ -44,6 +44,8 @@ const confirm = () => {
     class="modal fade"
     id="death-modal"
     tabindex="-1"
+    data-bs-backdrop="static"
+    data-bs-keyboard="false"
     aria-labelledby="death-modal"
     aria-hidden="true"
   >
