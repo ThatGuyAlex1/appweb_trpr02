@@ -41,7 +41,7 @@ let playerExperienceName = setupExperienceName(props.playerExperience!);
 </script>
 
 <template>
-    <div class="card col-lg-4 col-md-6"> 
+    <div class="card col-lg-4 col-md-6 pe-0 ps-0"> 
         <div class="card-body">
             <h5 class="card-title d-flex justify-content-center" id="playerNameText">{{ props.playerName }}</h5>
             <h6 class="card-text d-flex justify-content-center" id="playerExperience&CGText">{{ playerExperienceName }} - {{ props.currentPlayerCG }} CG</h6>

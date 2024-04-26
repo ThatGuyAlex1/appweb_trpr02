@@ -155,7 +155,7 @@ function resetRewardModal() {
 
 </script>
 <template>
-  <div class="container">
+  <div class="container pt-5 ps-0 pe-0">
     <div class="row">
       <GameActions v-if="!isLoading" :playerLife="currentPlayerLife" :maxPlayerLife="MAX_LIFE_POINT" :playerExperience="PLAYER_BASE_EXPERIENCE" :ennemyLife="currentEnnemyLife" :maxEnnemyLife="ennemiesRef[currentMission-1].ship.vitality" :ennemyExperience="ennemiesRef[currentMission-1].experience" :currentPlayerCG="currentPlayerCG" @updateLife="handleUpdateLife" @updateFinishMission="nextMission" @updateFinishMissionAndRepair="handleFinishMissionAndRepair" />
       <GameMission v-if="!isLoading" :currentMission="currentMission" />
