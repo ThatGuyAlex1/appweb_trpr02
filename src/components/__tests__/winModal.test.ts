@@ -9,13 +9,17 @@ describe('WinModel.vue', () => {
     const wrapper = mount(WinModel, {
       props: {
         title: 'mon titre',
-        body: 'mon contenu',
+        body1: 'mon contenu1',
+        body2: 'mon contenu2',
+        credits: 5,
         dismissButton: 'OK',
       }
     })
 
     expect(wrapper.text()).toContain('mon titre')
-    expect(wrapper.text()).toContain('mon contenu')
+    expect(wrapper.text()).toContain('mon contenu1')
+    expect(wrapper.text()).toContain('mon contenu2')
+    expect(wrapper.text()).toContain('5')
     expect(wrapper.find('button[name="confirmer"]').exists()).toBe(true)
   })
 
