@@ -139,10 +139,47 @@ function resetRewardModal() {
 <template>
   <div class="container">
     <div class="row">
-      <GameActions v-if="!isLoading" :playerLife="currentPlayerLife" :maxPlayerLife="MAX_LIFE_POINT" :playerExperience="PLAYER_BASE_EXPERIENCE" :ennemyLife="currentEnnemyLife" :maxEnnemyLife="ennemiesRef[currentMission-1].ship.vitality" :ennemyExperience="ennemiesRef[currentMission-1].experience" :currentPlayerCG="currentPlayerCG" @updateLife="handleUpdateLife" @updateFinishMission="nextMission" @updateFinishMissionAndRepair="handleFinishMissionAndRepair" @errorUpdate="handleErrorUpdate" />
+      <GameActions v-if="!isLoading" :playerLife="currentPlayerLife" :maxPlayerLife="MAX_LIFE_POINT" :playerExperience="PLAYER_BASE_EXPERIENCE" :ennemyLife="currentEnnemyLife" :maxEnnemyLife="ennemiesRef[currentMission-1].ship.vitality" :ennemyExperience="ennemiesRef[currentMission-1].experience" :currentPlayerCG="currentPlayerCG" @updateLife="handleUpdateLife" @updateFinishMission="nextMission" @updateFinishMissionAndRepair="handleFinishMissionAndRepair" />
       <GameMission v-if="!isLoading" :currentMission="currentMission" />
       <GamePlayer v-if="!isLoading" :playerName="props.name" :playerShip="selectedShip!.name"  :playerLife="currentPlayerLife" :maxPlayerLife="MAX_LIFE_POINT" :playerExperience="PLAYER_BASE_EXPERIENCE" :currentPlayerCG="currentPlayerCG" />
       <GameEnemy v-if="!isLoading" :ennemyName="ennemiesRef[currentMission-1].name" :ennemyShip="ennemiesRef[currentMission-1].ship.name" :ennemyLife="currentEnnemyLife" :maxEnnemyLife="ennemiesRef[currentMission-1].ship.vitality" :ennemyExperience="ennemiesRef[currentMission-1].experience" :ennemyCG="ennemiesRef[currentMission-1].credit" />
     </div>
+
+    <!--Modal de fin partie (mort)-->
+    <NotifyModal
+      @onModalConfirmed="returnToHome"
+      :trigger="triggerDeathModal"
+      title="Partie terminée"
+      body="Vous avez péri lors d'un combat. Retour au menu principal."
+      dismissButton="Ok"
+    />
+    <!--Modal de victoire (mission)-->
+    <NotifyModal
+      @onModalConfirmed="resetRewardModal"
+      :trigger="triggerRewardModal"
+      title="Ennemi vaincu"
+      body="Vous avez gagnez le combat. Vous remportez {{ ennemiesRef[currentMission - 1].credits }} crédits."
+      dismissButton="Ok"
+    />
+    <!--Modal de victoire (mission)-->
+    <NotifyModal
+      @onModalConfirmed="finishGame"
+      :trigger="triggerWinModal"
+      title="Victoire !"
+      body="Vous avez complété 5 mission. Vous terminez avec {{ currentPlayerCG.value }} crédits."
+      dismissButton="Ok"
+    />
+
+    />
+    <!--Modal de victoire (mission)-->
+    <ConfirmModal
+      @onModalConfirmed=""
+      :trigger="triggerLeaveModal"
+      title="Attention"
+      body="Vous êtes sur le point de quitter le jeu. Vos données seront perdues."
+      confirmButton="Quitter"
+      cancelButton="Annuler"
+    />
+    <Loading :active="isLoading" />
   </div>
 </template>
