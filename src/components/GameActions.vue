@@ -90,13 +90,13 @@ function finishMissionAndRepairShip(){
             <h5 class="card-title">Actions</h5>
             <div class="row">
                 <div class="col-4">
-                    <button @click="fight()" type="button" class="btn btn-primary">Combattre</button>
+                    <button @click="fight()" type="button" class="btn btn-primary" id="fight">Combattre</button>
                 </div>
                 <div class="col-4">
-                    <button @click="finishMission()" type="button" class="btn btn-primary">Terminer la mission</button>
+                    <button @click="finishMission()" type="button" class="btn btn-primary" id="finishMission">Terminer la mission</button>
                 </div>
                 <div class="col-4">
-                    <button @click="finishMissionAndRepairShip()" type="button" class="btn btn-primary">Terminer la mission et réparer le vaisseau</button>
+                    <button @click="finishMissionAndRepairShip()" type="button" class="btn btn-primary" id="finishMissionAndRepairShip">Terminer la mission et réparer le vaisseau</button>
                 </div>
             </div>
         </div>
