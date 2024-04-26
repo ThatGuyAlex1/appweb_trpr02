@@ -169,8 +169,7 @@ function resetRewardModal() {
       body="Vous avez complété 5 mission. Vous terminez avec {{ currentPlayerCG.value }} crédits."
       dismissButton="Ok"
     />
-
-    />
+    
     <!--Modal de victoire (mission)-->
     <ConfirmModal
       @onModalConfirmed=""
