@@ -7,8 +7,7 @@ const props = defineProps({
   trigger: Boolean,
   title: String,
   body: String,
-  cancelButton: String,
-  confirmButton: String
+  dismissButton: String
 })
 
 // Définir les événements émis par ce composant
@@ -70,15 +69,7 @@ const confirm = () => {
             class="btn btn-primary"
             @click="confirm"
           >
-            {{ confirmButton }}
-          </button>
-          <button
-            name="annuler"
-            type="button"
-            data-bs-dismiss="modal"
-            class="btn btn-secondary"
-          >
-            {{ cancelButton }}
+            {{ dismissButton }}
           </button>
         </div>
       </div>

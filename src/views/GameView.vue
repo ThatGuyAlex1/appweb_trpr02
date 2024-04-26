@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import { gameService } from '../services/gameService'
-import { ref,defineProps, computed } from 'vue'
-import { useRouter, onBeforeRouteLeave  } from 'vue-router'
+import { ref, onMounted, defineProps, computed } from 'vue'
+import { onBeforeRouteLeave, useRouter  } from 'vue-router'
 import ConfirmModal from '../components/ConfirmModal.vue'
+import NotifyModal from '../components/NotifyModal.vue'
 import type Ship from '../scripts/ship'
 import type Character from '../scripts/character'
 import GameActions from '../components/GameActions.vue'
@@ -13,24 +14,40 @@ import Loading from 'vue-loading-overlay'
 import 'vue-loading-overlay/dist/css/index.css'
 import { useToast } from 'vue-toast-notification'
 import 'vue-toast-notification/dist/theme-sugar.css'
+
 const MAX_LIFE_POINT: number = 200;
 const PLAYER_BASE_EXPERIENCE: number = 4;
 let ennemiesRef = ref<Character[]>([]);
-let errorMessage: string;
 let currentPlayerLife = ref<number>(0);
 currentPlayerLife.value+=MAX_LIFE_POINT;
 let currentEnnemyLife = ref<number>(0);
 let currentMission = ref<number>(1);
 let currentPlayerCG = ref<number>(0);
-let setupIsDone = ref(false);
+const isLoading = ref(true);
+const triggerDeathModal = ref(false);
+const triggerRewardModal = ref(false);
+const triggerWinModal = ref(false);
+const triggerLeaveModal = ref(false);
 
 const props = defineProps({
   name: String,
   selectedShip: String
 })
 
-async function fetchEnnemies(){
+onMounted(async () => {
   try {
+    await setup();
+  } catch (error) {
+    useToast().error(
+      `Erreur avec le service: ${(error as Error).message}. Oups, le backend a lâché !`,
+      { duration: 6000 }
+    )
+  } finally {
+    isLoading.value = false
+  }
+})
+
+async function fetchEnnemies(){
   const gameResponse: Character[] = await gameService.getCharacters();
   const selectedEnnemies: Character[] = [];
   //aidé par chatGPT
@@ -42,14 +59,8 @@ async function fetchEnnemies(){
         selectedEnnemies.push(gameResponse[randomIndex]);
       }
     }
-  ennemiesRef.value = selectedEnnemies;
-  } catch (error) {
-  errorMessage = 'Error fetching ennemies:' + error
-  }
+    ennemiesRef.value = selectedEnnemies;
 }
-
-
-
 
 //aidé de chatGPT
 const selectedShip = computed(() => {
@@ -59,11 +70,10 @@ const selectedShip = computed(() => {
 
 async function setup(){
   await fetchEnnemies();
-  setupEnnemyLife();
-  setupIsDone.value = true;
+  await setupEnnemyLife();
 }
 
-function setupEnnemyLife(){
+async function setupEnnemyLife(){
   currentEnnemyLife.value = ennemiesRef.value[currentMission.value-1].ship.vitality;
 }
 
@@ -74,6 +84,7 @@ function nextMission(){
     //TODO popup de partie gagné, envoyer le résultat a la database et rediriger vers la page de score
   }
   else{
+    triggerRewardModal.value = true;
     currentMission.value++;
     setupEnnemyLife();
   }
@@ -81,7 +92,7 @@ function nextMission(){
 
 function handleUpdateLife(playerLife: number, ennemyLife: number){
   if(playerLife <= 0){
-    //TODO popup message de game over et retour au home
+    triggerDeathModal.value = true;
   }
   else{
     currentPlayerLife.value = playerLife;
@@ -102,19 +113,36 @@ function handleFinishMissionAndRepair(playerLife: number, CGPlayer: number){
   nextMission();
 }
 
-function handleErrorUpdate(error: string){
-  errorMessage = error;
+onBeforeRouteLeave((to, from, next) => {
+  if (triggerDeathModal.value || triggerWinModal.value) {
+    // Empêche la navigation
+    next(false)
+  } else {
+    // Autorise la navigation
+    next(false)
+  }
+})
+
+function returnToHome() {
+  router.push({ name: 'Home' })
 }
 
-setup();
+function finishGame() {
+  router.push({ name: 'Score' })
+}
+
+function resetRewardModal() {
+  triggerRewardModal.value = false;
+}
+
 </script>
 <template>
   <div class="container">
     <div class="row">
-      <GameActions v-if="setupIsDone" :playerLife="currentPlayerLife" :maxPlayerLife="MAX_LIFE_POINT" :playerExperience="PLAYER_BASE_EXPERIENCE" :ennemyLife="currentEnnemyLife" :maxEnnemyLife="ennemiesRef[currentMission-1].ship.vitality" :ennemyExperience="ennemiesRef[currentMission-1].experience" :currentPlayerCG="currentPlayerCG" @updateLife="handleUpdateLife" @updateFinishMission="nextMission" @updateFinishMissionAndRepair="handleFinishMissionAndRepair" @errorUpdate="handleErrorUpdate" />
-      <GameMission v-if="setupIsDone" :currentMission="currentMission" />
-      <GamePlayer v-if="setupIsDone" :playerName="props.name" :playerShip="selectedShip!.name"  :playerLife="currentPlayerLife" :maxPlayerLife="MAX_LIFE_POINT" :playerExperience="PLAYER_BASE_EXPERIENCE" :currentPlayerCG="currentPlayerCG" />
-      <GameEnemy v-if="setupIsDone" :ennemyName="ennemiesRef[currentMission-1].name" :ennemyShip="ennemiesRef[currentMission-1].ship.name" :ennemyLife="currentEnnemyLife" :maxEnnemyLife="ennemiesRef[currentMission-1].ship.vitality" :ennemyExperience="ennemiesRef[currentMission-1].experience" :ennemyCG="ennemiesRef[currentMission-1].credit" />
+      <GameActions v-if="!isLoading" :playerLife="currentPlayerLife" :maxPlayerLife="MAX_LIFE_POINT" :playerExperience="PLAYER_BASE_EXPERIENCE" :ennemyLife="currentEnnemyLife" :maxEnnemyLife="ennemiesRef[currentMission-1].ship.vitality" :ennemyExperience="ennemiesRef[currentMission-1].experience" :currentPlayerCG="currentPlayerCG" @updateLife="handleUpdateLife" @updateFinishMission="nextMission" @updateFinishMissionAndRepair="handleFinishMissionAndRepair" @errorUpdate="handleErrorUpdate" />
+      <GameMission v-if="!isLoading" :currentMission="currentMission" />
+      <GamePlayer v-if="!isLoading" :playerName="props.name" :playerShip="selectedShip!.name"  :playerLife="currentPlayerLife" :maxPlayerLife="MAX_LIFE_POINT" :playerExperience="PLAYER_BASE_EXPERIENCE" :currentPlayerCG="currentPlayerCG" />
+      <GameEnemy v-if="!isLoading" :ennemyName="ennemiesRef[currentMission-1].name" :ennemyShip="ennemiesRef[currentMission-1].ship.name" :ennemyLife="currentEnnemyLife" :maxEnnemyLife="ennemiesRef[currentMission-1].ship.vitality" :ennemyExperience="ennemiesRef[currentMission-1].experience" :ennemyCG="ennemiesRef[currentMission-1].credit" />
     </div>
   </div>
 </template>
