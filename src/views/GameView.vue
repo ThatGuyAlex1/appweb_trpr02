@@ -32,7 +32,7 @@ const triggerWinModal = ref(false);
 const triggerLeaveModal = ref(0);
 const leaveConfirmed = ref(false);
 let ennemyCG = ref(0);
-let destination : any;
+let destination : RouteRecordName;
 
 const props = defineProps({
   name: String,
@@ -130,7 +130,8 @@ onBeforeRouteLeave((to, from, next) => {
     next()
   } 
   else {
-    destination = to.name;
+    //aidé par chatGPT
+    destination = to.name || "Home";
     triggerLeaveModal.value++;
     next(false)
   }
