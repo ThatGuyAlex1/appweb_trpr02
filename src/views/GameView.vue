@@ -29,9 +29,10 @@ const isLoading = ref(true);
 const triggerDeathModal = ref(false);
 const triggerRewardModal = ref(false);
 const triggerWinModal = ref(false);
-const triggerLeaveModal = ref(false);
+const triggerLeaveModal = ref(0);
 const leaveConfirmed = ref(false);
 let ennemyCG = ref(0);
+let destination : any;
 
 const props = defineProps({
   name: String,
@@ -125,15 +126,12 @@ function handleFinishMissionAndRepair(playerLife: number, CGPlayer: number){
 }
 
 onBeforeRouteLeave((to, from, next) => {
-  if (triggerDeathModal.value || triggerWinModal.value) {
+  if (triggerDeathModal.value || triggerWinModal.value || leaveConfirmed.value) {
     next()
   } 
-  else if (leaveConfirmed) {
-    sendToDestination(to.name);
-    next()
-  }
   else {
-    triggerLeaveModal.value = true;
+    destination = to.name;
+    triggerLeaveModal.value++;
     next(false)
   }
 })
@@ -148,9 +146,6 @@ function finishGame() {
 
 function leaveConfirm() {
   leaveConfirmed.value = true;
-}
-
-function sendToDestination(destination) {
   router.push({ name: destination })
 }
 

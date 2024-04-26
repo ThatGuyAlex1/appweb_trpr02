@@ -4,7 +4,7 @@ import { ref, watch, onMounted } from 'vue'
 
 // Définir les props avec des types
 const props = defineProps({
-  trigger: Boolean,
+  trigger: Number,
   title: String,
   body: String,
   cancelButton: String,
