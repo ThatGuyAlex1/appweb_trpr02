@@ -2,8 +2,10 @@
 import { gameService } from '../services/gameService'
 import { ref, onMounted, defineProps, computed } from 'vue'
 import { onBeforeRouteLeave, useRouter  } from 'vue-router'
-import ConfirmModal from '../components/ConfirmModal.vue'
-import NotifyModal from '../components/NotifyModal.vue'
+import DeathModal from '../components/DeathModal.vue'
+import RewardModal from '../components/RewardModal.vue'
+import WinModal from '../components/WinModal.vue'
+import LeaveModal from '../components/LeaveModal.vue'
 import type Ship from '../scripts/ship'
 import type Character from '../scripts/character'
 import GameActions from '../components/GameActions.vue'
@@ -28,6 +30,7 @@ const triggerDeathModal = ref(false);
 const triggerRewardModal = ref(false);
 const triggerWinModal = ref(false);
 const triggerLeaveModal = ref(false);
+let rewardText = ref("");
 
 const props = defineProps({
   name: String,
@@ -84,14 +87,22 @@ function nextMission(){
     //TODO popup de partie gagné, envoyer le résultat a la database et rediriger vers la page de score
   }
   else{
+    console.log("win fight");
+    updateRewardText();
     triggerRewardModal.value = true;
     currentMission.value++;
     setupEnnemyLife();
   }
 }
 
+function updateRewardText()
+{
+  rewardText.value = "Vous avez gagnez le combat. Vous remportez" + ennemiesRef.value[currentMission.value - 1].credit.toString + "crédits."
+}
+
 function handleUpdateLife(playerLife: number, ennemyLife: number){
   if(playerLife <= 0){
+    console.log("died lol");
     triggerDeathModal.value = true;
   }
   else{
@@ -114,12 +125,12 @@ function handleFinishMissionAndRepair(playerLife: number, CGPlayer: number){
 }
 
 onBeforeRouteLeave((to, from, next) => {
-  if (triggerDeathModal.value || triggerWinModal.value) {
+  if (triggerWinModal.value) {
     // Empêche la navigation
-    next(false)
+    next()
   } else {
     // Autorise la navigation
-    next(false)
+    next()
   }
 })
 
@@ -146,34 +157,32 @@ function resetRewardModal() {
     </div>
 
     <!--Modal de fin partie (mort)-->
-    <NotifyModal
-      @onModalConfirmed="returnToHome"
+    <DeathModal
+      @onDeathConfirmed="returnToHome"
       :trigger="triggerDeathModal"
       title="Partie terminée"
       body="Vous avez péri lors d'un combat. Retour au menu principal."
       dismissButton="Ok"
     />
     <!--Modal de victoire (mission)-->
-    <NotifyModal
-      @onModalConfirmed="resetRewardModal"
+    <RewardModal
+      @onRewardConfirmed="resetRewardModal"
       :trigger="triggerRewardModal"
       title="Ennemi vaincu"
-      body="Vous avez gagnez le combat. Vous remportez {{ ennemiesRef[currentMission - 1].credits }} crédits."
+      body='Vous avez gagnez le combat. Vous remportez ${ennemiesRef.value[currentMission.value - 1].credit.toString} crédits.'
       dismissButton="Ok"
     />
-    <!--Modal de victoire (mission)-->
-    <NotifyModal
-      @onModalConfirmed="finishGame"
+    <!--Modal de victoire (partie)-->
+    <WinModal
+      @onWinConfirmed="finishGame"
       :trigger="triggerWinModal"
       title="Victoire !"
       body="Vous avez complété 5 mission. Vous terminez avec {{ currentPlayerCG.value }} crédits."
       dismissButton="Ok"
     />
-
-    />
-    <!--Modal de victoire (mission)-->
-    <ConfirmModal
-      @onModalConfirmed=""
+    <!--Modal d'abandon de donné-->
+    <LeaveModal
+      @onLeaveConfirmed=""
       :trigger="triggerLeaveModal"
       title="Attention"
       body="Vous êtes sur le point de quitter le jeu. Vos données seront perdues."

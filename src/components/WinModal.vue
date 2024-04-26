@@ -11,7 +11,7 @@ const props = defineProps({
 })
 
 // Définir les événements émis par ce composant
-const emit = defineEmits(['onModalConfirmed'])
+const emit = defineEmits(['onWinConfirmed'])
 
 // Utiliser ref pour créer une référence réactive à null qui sera utilisée pour stocker l'instance de la modal
 const modal = ref<Modal | null>(null)
@@ -20,8 +20,8 @@ const modal = ref<Modal | null>(null)
 // Il est exécuté après que le composant soit monté dans le DOM.
 onMounted(() => {
   // Assure-toi que l'élément #confirm-modal existe dans le template
-  if (document.querySelector('#confirm-modal')) {
-    modal.value = new Modal('#confirm-modal')
+  if (document.querySelector('#win-modal')) {
+    modal.value = new Modal('#win-modal')
   }
 })
 
@@ -34,7 +34,7 @@ watch(() => props.trigger, (newValue, oldValue) => {
 
 // Méthode pour gérer la confirmation, appelée par un événement click dans le template par exemple
 const confirm = () => {
-  emit('onModalConfirmed')
+  emit('onWinConfirmed')
 }
 </script>
 
@@ -42,21 +42,15 @@ const confirm = () => {
 <template>
   <div
     class="modal fade"
-    id="confirm-modal"
+    id="win-modal"
     tabindex="-1"
-    aria-labelledby="confirm-modal"
+    aria-labelledby="win-modal"
     aria-hidden="true"
   >
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title">{{ title }}</h5>
-          <button
-            type="button"
-            data-bs-dismiss="modal"
-            class="btn-close"
-            aria-label="Close"
-          ></button>
         </div>
         <div class="modal-body">
           {{ body }}

@@ -12,7 +12,7 @@ const props = defineProps({
 })
 
 // Définir les événements émis par ce composant
-const emit = defineEmits(['onModalConfirmed'])
+const emit = defineEmits(['onLeaveConfirmed'])
 
 // Utiliser ref pour créer une référence réactive à null qui sera utilisée pour stocker l'instance de la modal
 const modal = ref<Modal | null>(null)
@@ -35,7 +35,7 @@ watch(() => props.trigger, (newValue, oldValue) => {
 
 // Méthode pour gérer la confirmation, appelée par un événement click dans le template par exemple
 const confirm = () => {
-  emit('onModalConfirmed')
+  emit('onLeaveConfirmed')
 }
 </script>
 
