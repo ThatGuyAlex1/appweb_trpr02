@@ -6,12 +6,14 @@ import { ref, watch, onMounted } from 'vue'
 const props = defineProps({
   trigger: Boolean,
   title: String,
-  body: String,
+  body1: String,
+  body2: String,
+  credits: Number,
   dismissButton: String
 })
 
 // Définir les événements émis par ce composant
-const emit = defineEmits(['onModalConfirmed'])
+const emit = defineEmits(['onRewardConfirmed'])
 
 // Utiliser ref pour créer une référence réactive à null qui sera utilisée pour stocker l'instance de la modal
 const modal = ref<Modal | null>(null)
@@ -20,8 +22,8 @@ const modal = ref<Modal | null>(null)
 // Il est exécuté après que le composant soit monté dans le DOM.
 onMounted(() => {
   // Assure-toi que l'élément #confirm-modal existe dans le template
-  if (document.querySelector('#confirm-modal')) {
-    modal.value = new Modal('#confirm-modal')
+  if (document.querySelector('#reward-modal')) {
+    modal.value = new Modal('#reward-modal')
   }
 })
 
@@ -34,7 +36,7 @@ watch(() => props.trigger, (newValue, oldValue) => {
 
 // Méthode pour gérer la confirmation, appelée par un événement click dans le template par exemple
 const confirm = () => {
-  emit('onModalConfirmed')
+  emit('onRewardConfirmed')
 }
 </script>
 
@@ -42,24 +44,22 @@ const confirm = () => {
 <template>
   <div
     class="modal fade"
-    id="confirm-modal"
+    id="reward-modal"
+    data-bs-backdrop="static"
+    data-bs-keyboard="false"
     tabindex="-1"
-    aria-labelledby="confirm-modal"
+    aria-labelledby="reward-modal"
     aria-hidden="true"
   >
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title">{{ title }}</h5>
-          <button
-            type="button"
-            data-bs-dismiss="modal"
-            class="btn-close"
-            aria-label="Close"
-          ></button>
         </div>
         <div class="modal-body">
-          {{ body }}
+          {{ body1 }}
+          {{ credits }}
+          {{ body2 }}
         </div>
         <div class="modal-footer">
           <button

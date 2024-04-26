@@ -1,9 +1,11 @@
 <script setup lang="ts">
 import { gameService } from '../services/gameService'
 import { ref, onMounted, defineProps, computed } from 'vue'
-import { onBeforeRouteLeave, useRouter  } from 'vue-router'
-import ConfirmModal from '../components/ConfirmModal.vue'
-import NotifyModal from '../components/NotifyModal.vue'
+import { onBeforeRouteLeave, useRouter, type RouteRecordName  } from 'vue-router'
+import DeathModal from '../components/DeathModal.vue'
+import RewardModal from '../components/RewardModal.vue'
+import WinModal from '../components/WinModal.vue'
+import LeaveModal from '../components/LeaveModal.vue'
 import type Ship from '../scripts/ship'
 import type Character from '../scripts/character'
 import GameActions from '../components/GameActions.vue'
@@ -27,7 +29,10 @@ const isLoading = ref(true);
 const triggerDeathModal = ref(false);
 const triggerRewardModal = ref(false);
 const triggerWinModal = ref(false);
-const triggerLeaveModal = ref(false);
+const triggerLeaveModal = ref(0);
+const leaveConfirmed = ref(false);
+let ennemyCG = ref(0);
+let destination : RouteRecordName;
 
 const props = defineProps({
   name: String,
@@ -82,12 +87,17 @@ const router = useRouter()
 function nextMission(){
   if(currentMission.value == 5){
     //TODO popup de partie gagné, envoyer le résultat a la database et rediriger vers la page de score
+    triggerWinModal.value = true;
   }
   else{
-    triggerRewardModal.value = true;
     currentMission.value++;
     setupEnnemyLife();
   }
+}
+
+function updateCurrentEnnemyCG()
+{
+  ennemyCG.value = ennemiesRef.value[currentMission.value - 1].credit;
 }
 
 function handleUpdateLife(playerLife: number, ennemyLife: number){
@@ -99,7 +109,9 @@ function handleUpdateLife(playerLife: number, ennemyLife: number){
   }
 
   if(ennemyLife <= 0){
-    currentPlayerCG.value+=ennemiesRef.value[currentMission.value-1].credit
+    updateCurrentEnnemyCG();
+    triggerRewardModal.value = true;
+    currentPlayerCG.value+=ennemiesRef.value[currentMission.value-1].credit;
     nextMission();
   }
   else{
@@ -114,11 +126,13 @@ function handleFinishMissionAndRepair(playerLife: number, CGPlayer: number){
 }
 
 onBeforeRouteLeave((to, from, next) => {
-  if (triggerDeathModal.value || triggerWinModal.value) {
-    // Empêche la navigation
-    next(false)
-  } else {
-    // Autorise la navigation
+  if (triggerDeathModal.value || triggerWinModal.value || leaveConfirmed.value) {
+    next()
+  } 
+  else {
+    //aidé par chatGPT
+    destination = to.name || "Home";
+    triggerLeaveModal.value++;
     next(false)
   }
 })
@@ -129,6 +143,11 @@ function returnToHome() {
 
 function finishGame() {
   router.push({ name: 'Score' })
+}
+
+function leaveConfirm() {
+  leaveConfirmed.value = true;
+  router.push({ name: destination })
 }
 
 function resetRewardModal() {
@@ -146,33 +165,36 @@ function resetRewardModal() {
     </div>
 
     <!--Modal de fin partie (mort)-->
-    <NotifyModal
-      @onModalConfirmed="returnToHome"
+    <DeathModal
+      @onDeathConfirmed="returnToHome"
       :trigger="triggerDeathModal"
       title="Partie terminée"
       body="Vous avez péri lors d'un combat. Retour au menu principal."
-      dismissButton="Ok"
+      dismissButton="Accueil"
     />
     <!--Modal de victoire (mission)-->
-    <NotifyModal
-      @onModalConfirmed="resetRewardModal"
+    <RewardModal v-if="!isLoading"
+      @onRewardConfirmed="resetRewardModal"
       :trigger="triggerRewardModal"
       title="Ennemi vaincu"
-      body="Vous avez gagnez le combat. Vous remportez {{ ennemiesRef[currentMission - 1].credits }} crédits."
-      dismissButton="Ok"
+      body1="Vous avez gagnez le combat. Vous remportez "
+      :credits="ennemyCG"
+      body2=" crédits"
+      dismissButton="Prochain combat"
     />
-    <!--Modal de victoire (mission)-->
-    <NotifyModal
-      @onModalConfirmed="finishGame"
+    <!--Modal de victoire (partie)-->
+    <WinModal
+      @onWinConfirmed="finishGame"
       :trigger="triggerWinModal"
       title="Victoire !"
-      body="Vous avez complété 5 mission. Vous terminez avec {{ currentPlayerCG.value }} crédits."
-      dismissButton="Ok"
+      body1="Vous avez complété 5 mission. Vous terminez avec "
+      :credits=currentPlayerCG
+      body2=" crédits."
+      dismissButton="Voir le classement"
     />
-    
-    <!--Modal de victoire (mission)-->
-    <ConfirmModal
-      @onModalConfirmed=""
+    <!--Modal d'abandon de donné-->
+    <LeaveModal
+      @onLeaveConfirmed="leaveConfirm"
       :trigger="triggerLeaveModal"
       title="Attention"
       body="Vous êtes sur le point de quitter le jeu. Vos données seront perdues."
