@@ -48,7 +48,7 @@ const ennemyExperienceName = computed(() => {
     <div class="card col-lg-4 col-md-6"> 
         <div class="card-body">
             <h5 class="card-title d-flex justify-content-center" id="ennemyNameText">{{ props.ennemyName }}</h5>
-            <h6 class="card-text d-flex justify-content-center" id="ennemyExperience&CGText">{{ ennemyExperienceName }} - {{ props.ennemyCG }} CG</h6>
+            <h6 class="card-text d-flex justify-content-center" id="ennemyExperienceAndCGText">{{ ennemyExperienceName }} - {{ props.ennemyCG }} CG</h6>
             <h6 class="card-text d-flex justify-content-center" id="ennemyShipText">{{ props.ennemyShip }}</h6>
 
             <div class="progress mb-2">
