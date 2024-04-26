@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { gameService } from '../services/gameService'
+import { playerScoreService } from '@/services/playerScoreService'
 import { ref, onMounted, defineProps, computed } from 'vue'
 import { onBeforeRouteLeave, useRouter, type RouteRecordName  } from 'vue-router'
 import DeathModal from '../components/DeathModal.vue'
@@ -32,7 +33,7 @@ const triggerWinModal = ref(false);
 const triggerLeaveModal = ref(0);
 const leaveConfirmed = ref(false);
 let ennemyCG = ref(0);
-let destination : any;
+let destination : RouteRecordName;
 
 const props = defineProps({
   name: String,
@@ -84,11 +85,13 @@ async function setupEnnemyLife(){
 
 const router = useRouter()
 
-function nextMission(){
+async function nextMission(){
   if(currentMission.value == 5){
     //TODO popup de partie gagné, envoyer le résultat a la database et rediriger vers la page de score
     triggerWinModal.value = true;
     triggerRewardModal.value = false;
+    let playerName = props.name;
+    await gameService.postRanking(playerName!, currentPlayerCG.value);
   }
   else{
     currentMission.value++;
@@ -131,7 +134,8 @@ onBeforeRouteLeave((to, from, next) => {
     next()
   } 
   else {
-    destination = to.name;
+    //aidé par chatGPT
+    destination = to.name || "Home";
     triggerLeaveModal.value++;
     next(false)
   }

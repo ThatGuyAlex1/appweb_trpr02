@@ -46,8 +46,23 @@ let playerExperienceName = setupExperienceName(props.playerExperience!);
             <h6 class="card-text d-flex justify-content-center" id="playerShipText">{{ props.playerShip }}</h6>
             <div class="progress mb-2">
               <!-- aidé un peu de chatGPT -->
-                <div class="progress-bar" id="playerLifeBar" role="progressbar" :style="{ width: lifePercentage + '%' }" aria-valuemin="0" aria-valuemax="100">{{ lifePercentage.toFixed(0) }}%</div>
+                <div class="progress-bar" :class="{ 'shake': lifePercentage < 20 }" id="playerLifeBar" role="progressbar" :style="{ width: lifePercentage + '%' }" aria-valuemin="0" aria-valuemax="100">{{ lifePercentage.toFixed(0) }}%</div>
             </div>
         </div>
     </div>
 </template>
+
+<style scoped>
+/* aidé de chatGPT pour faire des animations */
+@keyframes shake {
+  0% { transform: translateX(0); }
+  25% { transform: rotate(-5deg); }
+  50% { transform: rotate(5deg); }
+  75% { transform: rotate(-5deg); }
+  100% { transform: translateX(0); }
+}
+
+.shake {
+  animation: shake 0.1s infinite;
+}
+</style>
