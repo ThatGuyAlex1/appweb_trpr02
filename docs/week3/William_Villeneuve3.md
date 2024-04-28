@@ -7,13 +7,11 @@
 
 ## Tests
 
-C'est Alex qui a codé les tests. Les tests ont tous une bonne couverture et ils fonctionnent comme prévu excepté les tests pour les composants de **GameView** renvoient tous cette erreur :
+C'est Alex qui a codé les tests. Les tests ont tous une bonne couverture et ils fonctionnent comme prévu.
 
-```error
-Error: Cannot call trigger on an empty DOMWrapper.
-```
+## Tableau des pointages
 
-Nous avons essayé de corriger ces tests-ci, mais n'avons pas été capables. Mais comme nous le voyons lorsque l'application est en marche, les composants de **GameView** se comportent correctement et font ce qu'ils sont censé faire.
+Lorsque j'ai été bloquer quand j'ai travaillé sur l'envoi du résultat de la partie au tableau des pointages, Alex m'a aidé et il a vu que mon erreur était une faute de frappe.
 
 ## Progression du projet
 
