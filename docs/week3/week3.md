@@ -12,6 +12,6 @@ hero:
       text: William Villeneuve
       link: /week3/William_Villeneuve3
     - theme: brand
-      text: <nom3>
-      link: /<nom3>.md
+      text: Céleste Boudreault
+      link: /week3/Celeste_Boudreault
 
