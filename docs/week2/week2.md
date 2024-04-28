@@ -9,7 +9,7 @@ hero:
       text: Alexandre St-Amant
       link: /week2/Alexandre_St-Amant2.md
     - theme: brand
-      text: <William Villeneuve>
+      text: William Villeneuve
       link: /week2/William_Villeneuve2
     - theme: brand
       text: <nom3>
