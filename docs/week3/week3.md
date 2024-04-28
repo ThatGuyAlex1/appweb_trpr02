@@ -6,8 +6,8 @@ hero:
   name: "Semaine 3"
   actions:
     - theme: brand
-      text: <nom1>
-      link: /<nom1>.md
+      text: Alexandre St-Amant
+      link: /week3/Alexandre_St-Amant3
     - theme: brand
       text: William Villeneuve
       link: /week3/William_Villeneuve3
