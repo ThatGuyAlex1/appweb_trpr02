@@ -48,7 +48,7 @@ const ennemyExperienceName = computed(() => {
     <div class="card col-lg-4 col-md-6 ps-0 pe-0"> 
         <h5 class="card-header text-white bg-danger d-flex justify-content-center" id="ennemyNameText">{{ props.ennemyName }}</h5>
         <div class="card-body bg-dark text-white">
-            <h6 class="card-text d-flex justify-content-center" id="ennemyExperience&CGText">{{ ennemyExperienceName }} - {{ props.ennemyCG }} CG</h6>
+            <h6 class="card-text d-flex justify-content-center" id="ennemyExperienceAndCGText">{{ ennemyExperienceName }} - {{ props.ennemyCG }} CG</h6>
             <h6 class="card-text d-flex justify-content-center" id="ennemyShipText">{{ props.ennemyShip }}</h6>
 
             <div class="progress mb-2">

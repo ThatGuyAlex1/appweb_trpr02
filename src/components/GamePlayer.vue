@@ -42,7 +42,7 @@ let playerExperienceName = setupExperienceName(props.playerExperience!);
     <div class="card col-lg-4 col-md-6 pe-0 ps-0"> 
         <h5 class="card-header d-flex bg-primary text-white justify-content-center" id="playerNameText">{{ props.playerName }}</h5>
         <div class="card-body bg-dark text-white">
-            <h6 class="card-text d-flex justify-content-center" id="playerExperience&CGText">{{ playerExperienceName }} - {{ props.currentPlayerCG }} CG</h6>
+            <h6 class="card-text d-flex justify-content-center" id="playerExperienceAndCGText">{{ playerExperienceName }} - {{ props.currentPlayerCG }} CG</h6>
             <h6 class="card-text d-flex justify-content-center" id="playerShipText">{{ props.playerShip }}</h6>
             <div class="progress mb-2">
               <!-- aidé un peu de chatGPT -->
