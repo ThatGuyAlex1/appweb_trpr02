@@ -17,4 +17,4 @@ Nous avons essayé de corriger ces tests-ci, mais n'avons pas été capables. Ma
 
 ## Progression du projet
 
-Le projet est terminé et je suis satisfait du résultat. Nous avons eut quelque sousis au niveau de la communitcation mais notre équipe à bien travailler ensemble et si possible je voudrais que nous soyons ensemble pour le TP3.
+Le projet est terminé et je suis satisfait du résultat. Nous avons eu quelques soucis au niveau de la communication, mais notre équipe à bien travailler ensemble et si possible je voudrais que nous soyons ensemble pour le TP3.
