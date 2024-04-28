@@ -29,5 +29,9 @@ npm run docs:dev
 npm run test
 ```
 
+# Lien pour les revues de codes
+
+https://thatguyalex1.github.io/appweb_trpr02/
+
 Crée par: Alexandre St-Amant, William Villeneuve et Celeste Boudreault
 README écrit par Alexandre St-Amant
